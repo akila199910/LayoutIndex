@@ -194,7 +194,7 @@
                             </a>
                         </li>
 
-                        {{-- @if (Auth::user()->hasPermissionTo('Read_Supplier')) --}}
+                        @if (Auth::user()->hasPermissionTo('Read_Concession'))
                             @php
                                 $vendor_route_name = [
                                     'concessions',
@@ -213,8 +213,28 @@
                                     <span>Concessions</span>
                                 </a>
                             </li>
-                        {{-- @endif --}}
+                        @endif
 
+                        @if (Auth::user()->hasPermissionTo('Read_Order'))
+                        @php
+                            $vendor_route_name = [
+                                'orders',
+                                'orders.create.form',
+                                'orders.update.form',
+                            ];
+                        @endphp
+
+                        <li>
+                            <a href="{{ route('orders') }}"
+                                class="{{ in_array(request()->route()->getName(), $vendor_route_name) ? 'active' : '' }}">
+                                <span class="menu-side">
+                                    <img src="{{ asset('layout_style/img/icons/user.png') }}" style="width: 24px"
+                                        alt>
+                                </span>
+                                <span>Orders</span>
+                            </a>
+                        </li>
+                    @endif
                     </ul>
 
                     <div class="logout-btn">
@@ -256,7 +276,7 @@
     <script src="{{ asset('layout_style/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('layout_style/js/jquery.slimscroll.js') }}"></script>
     <script src="{{ asset('layout_style/js/app.js') }}"></script>
-    
+
     <script src="{{ asset('layout_style/jquery_confirm/script.js') }}"></script>
     <script src="{{ asset('layout_style/jquery_confirm/popup.js') }}"></script>
 

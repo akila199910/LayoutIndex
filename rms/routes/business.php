@@ -29,5 +29,13 @@ Route::middleware(['auth', 'isUserExist'])->group(function () {
     Route::post('/concessions/delete', [App\Http\Controllers\ConcessionController::class, 'delete'])->name('concessions.delete');
     Route::get('/concessions/view/{ref_no}', [App\Http\Controllers\ConcessionController::class, 'view_details'])->name('concessions.view_details');
 
+    Route::get('/orders', [App\Http\Controllers\OrderController::class, 'index'])->name('orders');
+    Route::get('/orders/create', [App\Http\Controllers\OrderController::class, 'create_form'])->name('orders.create.form');
+    Route::post('/orders/create', [App\Http\Controllers\OrderController::class, 'create'])->name('orders.create');
+    Route::get('/orders/update/{id}', [App\Http\Controllers\OrderController::class, 'update_form'])->name('orders.update.form');
+    Route::post('/orders/update', [App\Http\Controllers\OrderController::class, 'update'])->name('orders.update');
+    Route::post('/orders/delete', [App\Http\Controllers\OrderController::class, 'delete'])->name('orders.delete');
+    Route::get('/orders/view/{ref_no}', [App\Http\Controllers\OrderController::class, 'view_details'])->name('orders.view_details');
+
 
 });
