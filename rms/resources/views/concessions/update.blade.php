@@ -1,7 +1,7 @@
-@extends('layouts.business')
+@extends('layouts.sidebar')
 
 @section('title')
-Manage Categories
+Manage Concessions
 @endsection
 
 @section('content')
@@ -9,13 +9,13 @@ Manage Categories
         <div class="row">
             <div class="col-sm-8">
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('business.category') }}">Manage Categories</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('concessions') }}">Manage Concessions</a></li>
                     <li class="breadcrumb-item"><i class="feather-chevron-right"></i></li>
-                    <li class="breadcrumb-item active">Update Category</li>
+                    <li class="breadcrumb-item active">Update Concession</li>
                 </ul>
             </div>
             <div class="col-sm-4 text-end">
-                <a href="{{ route('business.category') }}" class="btn btn-primary btn-lg me-2" style='width:100px'>Back</a>
+                <a href="{{ route('concessions') }}" class="btn btn-primary btn-lg me-2" style='width:100px'>Back</a>
             </div>
         </div>
     </div>
@@ -30,32 +30,41 @@ Manage Categories
 
                             <div class="col-12">
                                 <div class="form-heading">
-                                    <h4>Update Category</h4>
+                                    <h4>Update Concession</h4>
                                 </div>
                             </div>
 
-                            <input type="hidden" name="id" value="{{$categories->id}}">
+                            <input type="hidden" name="id" value="{{$find_concession->id}}">
 
                             <div class="col-12 col-md-6 col-xl-6">
                                 <div class="input-block local-forms">
                                     <label for="name">Name <span class="text-danger">*</span> </label>
-                                    <input type="text" name="name" value="{{$categories->name}}" class="form-control name"
+                                    <input type="text" name="name" value="{{$find_concession->name}}" class="form-control name"
                                         id="name" maxlength="190">
                                     <small class="text-danger font-weight-bold err_name"></small>
                                 </div>
                             </div>
 
-                            {{-- <div class="col-12 col-md-6 col-xl-6">
-                                <div class="input-block local-forms">
-                                    <label>Image</label>
-                                    <input type="file" name="image" class="form-control image" id="image"
-                                        maxlength="190">
-                                    <small class="text-danger font-weight-bold err_image"></small>
-                                </div>
-                            </div> --}}
                             <div class="col-12 col-md-6 col-xl-6">
                                 <div class="input-block local-forms">
-                                    <label>Image <small class="text-primary">(Height : 500px X Width : 500px)</small></label>
+                                    <label for="price">Price<span class="text-danger">*</span></label>
+                                    <input type="text" name="price" value="{{$find_concession->price}}" class="form-control price number_only_val"
+                                        id="price" maxlength="190">
+                                    <small class="text-danger font-weight-bold err_price"></small>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 col-xl-6">
+                                <div class="input-block local-forms">
+                                    <label for="description">Description</label>
+                                    <input type="text" name="description" value="{{$find_concession->description}}" class="form-control description"
+                                        id="description" maxlength="190">
+                                    <small class="text-danger font-weight-bold err_description"></small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-6">
+                                <div class="input-block local-forms">
+                                    <label>Image <small class="text-primary"></small></label>
                                     <input class="upload-path form-control" disabled />
                                     <div class="upload">
                                         <input type="file" name="image" accept=".jpg, .jpeg, .png" class="form-control image" id="image"
@@ -71,7 +80,7 @@ Manage Categories
                                 <div class="input-block select-gender">
                                     <label class="gen-label" for="status">Status Inactive/Active</label>
                                     <div class="status-toggle d-flex justify-content-between align-items-center">
-                                        <input type="checkbox" id="status" name="status" {{$categories->status == 1 ? 'checked' : ''}} class="check">
+                                        <input type="checkbox" id="status" name="status" {{$find_concession->status == 1 ? 'checked' : ''}} class="check">
                                         <label for="status" class="checktoggle">checkbox</label>
                                     </div>
                                 </div>
@@ -79,13 +88,13 @@ Manage Categories
                         <div
                             class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 text-center form-group mb-md-4 pb-3">
 
-                          <img src="{{ $categories->image ? config('aws_url.url') . $categories->image : asset('layout_style/img/category.jpg') }}"
+                          <img src="{{ $find_concession->image ? config('aws_url.url') . $find_concession->image : asset('layout_style/img/default.png') }}"
                           style="width:100px; height:100px; border-radius:50%;object-fit: cover; " class="stylist-image" alt="">
 
                         </div>
 
                         </div>
-                        @if (Auth::user()->hasPermissionTo('Update_Category'))
+                        @if (Auth::user()->hasPermissionTo('Update_Concession'))
                                 <div class="col-12">
                                     <div class="doctor-submit text-end">
                                         <button type="submit"
@@ -119,7 +128,7 @@ Manage Categories
                 beforeSend: function() {
                     $("#loader").show();
                 },
-                url: "{{ route('business.category.update') }}",
+                url: "{{ route('concessions.update') }}",
                 data: formData,
                 contentType: false,
                 cache: false,

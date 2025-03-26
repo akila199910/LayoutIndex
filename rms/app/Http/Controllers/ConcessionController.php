@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Concession;
 use App\Repositories\ConcessionRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -107,8 +108,6 @@ class ConcessionController extends Controller
             return response()->json(['status' => false,  'message' => $validator->errors()]);
         }
 
-
-
         $data = $this->concession_repo->create($request);
 
         $data['status'] = true;
@@ -116,5 +115,80 @@ class ConcessionController extends Controller
         $data['route'] = route('concessions');
 
         return response()->json($data);
+    }
+
+    public function update_form($id)
+    {
+        //Check User Permission
+        $user = Auth::user();
+        $check_premission = user_permission_check($user, 'Update_Concession');
+
+        if ($check_premission == false) {
+            return abort(403);
+        }
+
+        $find_concession = Concession::where(['ref_no' => $id])->first();
+
+        if (!$find_concession) {
+            return abort(404);
+        }
+
+        return view('concessions.update',[
+            'find_concession' => $find_concession
+        ]);
+    }
+
+    public function update(Request $request)
+    {
+        $id = $request->id;
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|regex:/^[a-z A-Z 0-9]+$/u|max:190|unique:concessions,name,'.$id.',id,deleted_at,NULL',
+                'image'=>'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+                'price' => 'required',
+                'description' => 'nullable|max:190',
+            ]
+        );
+        if ($validator->fails()) {
+            return response()->json(['status' => false,  'message' => $validator->errors()]);
+        }
+
+        $data = $this->concession_repo->update($request);
+
+        $data['route'] = route('concessions');
+
+        return response()->json($data);
+    }
+
+    public function delete(Request $request)
+    {
+        $data = $this->concession_repo->delete($request);
+
+        $data['route'] = route('concessions');
+
+        return response()->json($data);
+    }
+
+    public function view_details(Request $request, $ref_no)
+    {
+        $user = Auth::user();
+        $check_premission = user_permission_check($user, 'Read_Concession');
+
+        if ($check_premission == false) {
+            return abort(403);
+        }
+        // End
+
+        $concessions = Concession::Where(['ref_no' => $ref_no])->first();
+
+        if (!$concessions) {
+            return abort(404);
+        }
+
+        return view('concessions.view_details', [
+            'concessions' =>  $concessions
+        ]);
     }
 }

@@ -28,6 +28,7 @@ class ConcessionRepository
         $new_concession->price = $request->price;
         $new_concession->image = $file;
         $new_concession->status = $request->status == true ? 1 : 0;
+        $new_concession->description = $request->description;
         $new_concession->save();
 
         $ref_no = refno_generate(16, 2, $new_concession->id);
@@ -42,68 +43,69 @@ class ConcessionRepository
 
    }
 
-//    public function update($request)
-//    {
+   public function update($request)
+   {
 
-//         $category=Category::find($request->id);
+        $find_concession = Concession::find($request->id);
+        $file = '';
+        if (isset($request->image) && $request->image->getClientOriginalName()) {
+            $file = resize_file_upload($request->image, 'concessions', 500, 500);
+        }
+        else
+        {
+            if (!$find_concession->image)
+                $file = '';
+            else
+                $file = $find_concession->image;
+        }
 
-//         $file = '';
-//         if (isset($request->image) && $request->image->getClientOriginalName()) {
-//             // $file = file_upload($request->image, 'categories');
-//             $file = resize_file_upload($request->image, 'categories', 500, 500);
-//         }
-//         else
-//         {
-//             if (!$category->image)
-//                 $file = '';
-//             else
-//                 $file = $category->image;
-//         }
+        $find_concession->name = $request->name;
+        $find_concession->image = $file;
+        $find_concession->price = $request->price;
+        $find_concession->status = $request->status==true ? 1 : 0;
+        $find_concession->description = $request->description;
+        $find_concession->update();
 
-//         $category->name = $request->name;
-//         $category->image = $file;
-//         $category->business_id= $request->business_id;
-//         $category->status = $request->status==true ? 1 : 0;
-//         $category->update();
+        return [
+            'status' => true,
+            'message' => 'Selected Concession Updated Successfully!'
+        ];
 
-//         return [
-//             'status' => true,
-//             'message' => 'Selected Category Updated Successfully!'
-//         ];
+   }
 
-//    }
+   public function delete($request)
+   {
 
-//    public function delete($request)
-//    {
+        $concession = Concession::find($request->id);
 
-//         $category = Category::find($request->id);
+        if (!$concession) {
+            return [
+                'status' => false,
+                'message' => 'Location Not Found'
+            ];
+        }
 
-//         if (!$category) {
-//             return [
-//                 'status' => false,
-//                 'message' => 'Location Not Found'
-//             ];
-//         }
+        $concession->delete();
 
-//         $category->delete();
-
-//         return [
-//             'status' => true,
-//             'message' => 'Selected Category Deleted Successfully!'
-//         ];
-// }
+        return [
+            'status' => true,
+            'message' => 'Selected Concession Deleted Successfully!'
+        ];
+}
 
 
-//    public function get_details($request)
-//     {
-//         $category = Category::find($request->id);
+   public function get_details($request)
+    {
+        $concession = Concession::find($request->id);
 
-//         $data = [
-//             'name' => $category->name,
-//             'status' => $category->status,
-//             'status_name' => $category->status == 1 ? 'Active' : 'Inactive',
-//         ];
+        $data = [
+            'name' => $concession->name,
+            'image' => $concession->image,
+            'price' => $concession->price,
+            'description' => $concession->description,
+            'status_name' => $concession->status == 1 ? 'Active' : 'Inactive',
+        ];
 
-//         return $data;
-//     }
+        return $data;
+    }
 }
