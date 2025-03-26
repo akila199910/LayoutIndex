@@ -256,8 +256,7 @@
     <script src="{{ asset('layout_style/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('layout_style/js/jquery.slimscroll.js') }}"></script>
     <script src="{{ asset('layout_style/js/app.js') }}"></script>
-    {{-- <script src="{{ asset('layout_style/plugins/select2/js/select2.min.js') }}"></script>
-    <script src="{{ asset('layout_style/plugins/select2/js/custom-select.js') }}"></script> --}}
+    
     <script src="{{ asset('layout_style/jquery_confirm/script.js') }}"></script>
     <script src="{{ asset('layout_style/jquery_confirm/popup.js') }}"></script>
 

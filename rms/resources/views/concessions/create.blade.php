@@ -1,8 +1,8 @@
 
-@extends('layouts.business')
+@extends('layouts.sidebar')
 
 @section('title')
-Manage Categories
+Manage Concessions
 @endsection
 
 @section('content')
@@ -10,13 +10,13 @@ Manage Categories
         <div class="row">
             <div class="col-sm-8">
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('business.category') }}">Manage Categories</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('concessions') }}">Manage Concessions</a></li>
                     <li class="breadcrumb-item"><i class="feather-chevron-right"></i></li>
-                    <li class="breadcrumb-item active">Add new Category</li>
+                    <li class="breadcrumb-item active">Add new Concession</li>
                 </ul>
             </div>
             <div class="col-sm-4 text-end">
-                <a href="{{ route('business.category') }}" class="btn btn-primary btn-lg me-2" style='width:100px'>Back</a>
+                <a href="{{ route('concessions') }}" class="btn btn-primary btn-lg me-2" style='width:100px'>Back</a>
             </div>
         </div>
     </div>
@@ -31,31 +31,40 @@ Manage Categories
 
                             <div class="col-12">
                                 <div class="form-heading">
-                                    <h4>Add new Category</h4>
+                                    <h4>Add new Concession</h4>
                                 </div>
                             </div>
 
                             <div class="col-12 col-md-6 col-xl-6">
                                 <div class="input-block local-forms">
-                                    <label for="first_name">Name <span class="text-danger">*</span> </label>
+                                    <label for="name">Name <span class="text-danger">*</span> </label>
                                     <input type="text" name="name" class="form-control name"
                                         id="name" maxlength="190">
                                     <small class="text-danger font-weight-bold err_name"></small>
                                 </div>
                             </div>
 
-                            {{-- <div class="col-12 col-md-6 col-xl-6">
+                            <div class="col-12 col-md-6 col-xl-6">
                                 <div class="input-block local-forms">
-                                    <label>Image</label>
-                                    <input type="file" name="image" class="form-control image" id="image"
-                                        maxlength="190">
-                                    <small class="text-danger font-weight-bold err_image"></small>
+                                    <label for="price">Price<span class="text-danger">*</span></label>
+                                    <input type="text" name="price" class="form-control price number_only_val"
+                                        id="price" maxlength="190">
+                                    <small class="text-danger font-weight-bold err_price"></small>
                                 </div>
-                            </div> --}}
+                            </div>
 
                             <div class="col-12 col-md-6 col-xl-6">
                                 <div class="input-block local-forms">
-                                    <label>Image <small class="text-primary">(Height : 500px X Width : 500px)</small> </label>
+                                    <label for="description">Description</label>
+                                    <input type="text" name="description" class="form-control description"
+                                        id="description" maxlength="190">
+                                    <small class="text-danger font-weight-bold err_description"></small>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 col-xl-6">
+                                <div class="input-block local-forms">
+                                    <label>Image <small class="text-primary"></small> </label>
                                     <input class="upload-path form-control" disabled />
                                     <div class="upload">
                                         <input type="file" name="image" accept=".jpg, .jpeg, .png" class="form-control image" id="image"
@@ -77,7 +86,7 @@ Manage Categories
                             </div>
 
                         </div>
-                        @if (Auth::user()->hasPermissionTo('Create_Category'))
+                        @if (Auth::user()->hasPermissionTo('Create_Concession'))
                                 <div class="col-12">
                                     <div class="doctor-submit text-end">
                                         <button type="submit"
@@ -100,8 +109,6 @@ Manage Categories
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             })
-
-            // $('#working_days').select2();
         })
 
         $('#submitForm').submit(function(e) {
@@ -113,7 +120,7 @@ Manage Categories
                 beforeSend: function() {
                     $("#loader").show();
                 },
-                url: "{{ route('business.category.create') }}",
+                url: "{{ route('concessions.create') }}",
                 data: formData,
                 contentType: false,
                 cache: false,

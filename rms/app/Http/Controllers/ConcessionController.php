@@ -28,9 +28,7 @@ class ConcessionController extends Controller
 
         if ($request->json) {
 
-
             $categories = $this->concession_repo->concessions_list($request);
-
 
             $data =  DataTables::of($categories)
                 ->addIndexColumn()
@@ -78,5 +76,17 @@ class ConcessionController extends Controller
         }
 
         return view('concessions.index');
+    }
+    public function create_form()
+    {
+        //Check User Permission
+        $user = Auth::user();
+        $check_premission = user_permission_check($user, 'Read_Concession');
+
+        if ($check_premission == false) {
+            return abort(403);
+        }
+
+        return view('concessions.create');
     }
 }
