@@ -1,7 +1,7 @@
 @extends('layouts.sidebar')
 
 @section('title')
-Manage Categories
+Manage Concessions
 @endsection
 
 @section('content')
@@ -9,13 +9,13 @@ Manage Categories
         <div class="row">
             <div class="col-sm-12">
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="javascript:;">Manage Categories </a></li>
+                    <li class="breadcrumb-item"><a href="javascript:;">Manage Concessions </a></li>
                 </ul>
             </div>
         </div>
     </div>
 
-    {{-- <div class="row">
+    <div class="row">
         <div class="col-sm-12">
             <div class="card card-table show-entire">
                 <div class="card-body">
@@ -24,13 +24,13 @@ Manage Categories
                         <div class="row align-items-center mb-2">
                             <div class="col">
                                 <div class="doctor-table-blk">
-                                    <h3 class="text-uppercase">Categories</h3>
+                                    <h3 class="text-uppercase">Concessions</h3>
                                 </div>
                             </div>
                             <div class="col-auto text-end float-end ms-auto download-grp">
-                                @if (Auth::user()->hasPermissionTo('Create_Category'))
-                                    <a href="{{ route('business.category.create.form') }}" class="btn btn-primary ms-2">
-                                        +&nbsp;New Category
+                                @if (Auth::user()->hasPermissionTo('Create_Concession'))
+                                    <a href="{{ route('concessions.create.form') }}" class="btn btn-primary ms-2">
+                                        +&nbsp;New Concession
                                     </a>
                                 @endif
                             </div>
@@ -44,6 +44,8 @@ Manage Categories
                                     <th style="width: 20px">#</th>
                                     <th>Image</th>
                                     <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Description</th>
                                     <th>Status</th>
                                     <th class="text-end"></th>
                                 </tr>
@@ -53,10 +55,10 @@ Manage Categories
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
 @endsection
 @section('scripts')
-    {{-- <script>
+    <script>
         var table;
 
         $(document).ready(function() {
@@ -72,7 +74,7 @@ Manage Categories
                     serverSide: true,
                     orderable: false,
                     ajax: {
-                        url: "{{ route('business.category', ['json' => 1]) }}"
+                        url: "{{ route('concessions', ['json' => 1]) }}"
                     },
                     columns: [{
                             data: 'DT_RowIndex',
@@ -88,6 +90,16 @@ Manage Categories
                         {
                             data: 'name',
                             name: 'name',
+                            orderable: false,
+                        },
+                        {
+                            data: 'price',
+                            name: 'price',
+                            orderable: false,
+                        },
+                        {
+                            data: 'description',
+                            name: 'description',
                             orderable: false,
                         },
                         {
@@ -112,7 +124,7 @@ Manage Categories
                 columnClass: 'col-lg-6 col-md-8 col-sm-10 col-12',
                 icon: 'far fa-question-circle text-danger',
                 title: 'Are you Sure!',
-                content: 'Do you want to Delete the Selected Category?',
+                content: 'Do you want to Delete the Selected Concession?',
                 type: 'red',
                 autoClose: 'cancel|10000',
                 buttons: {
@@ -127,7 +139,7 @@ Manage Categories
                             }
                             $.ajax({
                                 type: "POST",
-                                url: "{{ route('business.category.delete') }}",
+                                url: "{{ route('concessions.delete') }}",
                                 data: data,
                                 success: function(response) {
                                     $("#loader").hide();
@@ -164,5 +176,5 @@ Manage Categories
         }
 
 
-    </script> --}}
+    </script>
 @endsection

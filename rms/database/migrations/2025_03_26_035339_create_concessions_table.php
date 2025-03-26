@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('status')->nullable()->default(1);
             $table->decimal('price', 10, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

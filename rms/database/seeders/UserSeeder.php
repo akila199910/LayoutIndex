@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
 
 class UserSeeder extends Seeder
 {
@@ -29,10 +30,12 @@ class UserSeeder extends Seeder
             // $profile->profile = 'user/user.png';
             // $profile->save();
 
+            $permissions = Permission::pluck('name')->toArray();
+
             //assign role
             $admin->assignRole('super_admin');
 
             //Give Permission
-            // $admin->syncPermissions($permissions);
+            $admin->syncPermissions($permissions);
     }
 }
