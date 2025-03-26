@@ -63,8 +63,6 @@ class LoginController extends Controller
         $user = User::where('email', $input['email'])->first();
 
         if (!$user) {
-            // return redirect()->route('login')
-            //     ->with('error_login','These credentials do not match our records.');
 
             return response()->json(['status' => false, 'errors' => [
                 'email' => 'The email address do not match our records'
@@ -72,7 +70,6 @@ class LoginController extends Controller
         }
 
         if ($user->status == 0) {
-            // return redirect()->route('login')->with('error_login','Your account has been deactivated. Please contact the support team');
 
             return response()->json(['status' => false, 'errors' => [
                 'email' => 'Sorry! Your account was deactivated. Please contact the support team.'
@@ -81,52 +78,10 @@ class LoginController extends Controller
 
         if (auth()->attempt(array('email' => $input['email'], 'password' => $input['password'], 'status' => 1))) {
 
-            if (auth()->user()->hasRole('super_admin') || auth()->user()->hasRole('admin'))
-            {
-                $route = route('admin.business');
-                session()->put('_user_role', 'admin');
+            $route = route('dashboard');
 
-                return response()->json(['status' => true, 'message' => 'Success', 'route' => $route]);
-
-             }
-             elseif(auth()->user()->hasRole('user') || auth()->user()->hasRole('business_user')){
-
-                $user = Auth()->user();
-                if($user->hasRole('business_user')){
-                    $business_id = BusinessUsers::Where('user_id',$user->id)->first();
-                    $business_ids = BusinessUsers::where('user_id', $user->id)->pluck('business_id')->toArray();
-                    $active_business_id = Business::whereIn('id', $business_ids)->where('status', 1)->pluck('id')->toArray();
-                    if(empty($active_business_id)){
-                        Auth::logout();
-                        return response()->json(['status' => false, 'errors' => [
-                            'email' => 'Sorry! Your all the business are inactivated.'
-                        ]]);
-                    }
-
-                }
-                if($user->hasRole('user')){
-                    $business_id = UserBusiness::Where('user_id',$user->id)->first();
-                    $business_ids = UserBusiness::where('user_id', $user->id)->pluck('business_id')->toArray();
-                    $active_business_id = Business::whereIn('id', $business_ids)->where('status', 1)->pluck('id')->toArray();
-                    if(empty($active_business_id)){
-                        Auth::logout();
-                        return response()->json(['status' => false, 'errors' => [
-                            'email' => 'Sorry! Your business is inactivated.'
-                        ]]);
-                    }
-                }
-
-                $route = route('business.dashboard');
-                session()->put('_business_id', $business_id->business_id);
-                return response()->json(['status' => true, 'message' => 'Success', 'route' => $route]);
-
-            }
-            else {
-                Auth::logout();
-                $route = route('login');
-
-                return response()->json(['status' => true, 'message' => 'Success', 'route' => $route]);
-            }
+            return response()->json(['status' => true, 'message' => 'Success', 'route' => $route]);
+            
         } else {
 
             return response()->json(['status' => false, 'errors' => [
