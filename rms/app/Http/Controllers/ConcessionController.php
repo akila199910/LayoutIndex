@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\ConcessionRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
 class ConcessionController extends Controller
@@ -88,5 +89,32 @@ class ConcessionController extends Controller
         }
 
         return view('concessions.create');
+    }
+
+    public function create(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|regex:/^[a-z 0-9 A-Z]+$/u|max:190|unique:concessions,name,NULL,id,deleted_at,NULL',
+                'image'=>'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+                'price' => 'required',
+                'description' => 'nullable|max:190',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['status' => false,  'message' => $validator->errors()]);
+        }
+
+
+
+        $data = $this->concession_repo->create($request);
+
+        $data['status'] = true;
+        $data['message'] = 'New Concession Created Successfully!';
+        $data['route'] = route('concessions');
+
+        return response()->json($data);
     }
 }

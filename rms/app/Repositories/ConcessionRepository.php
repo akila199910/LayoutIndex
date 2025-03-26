@@ -20,11 +20,12 @@ class ConcessionRepository
 
         $file = '';
         if (isset($request->image) && $request->image->getClientOriginalName()) {
-            $file = resize_file_upload($request->image, 'categories', 500, 500);
+            $file = resize_file_upload($request->image, 'concessions', 500, 500);
         }
 
         $new_concession =new Concession();
         $new_concession->name = $request->name;
+        $new_concession->price = $request->price;
         $new_concession->image = $file;
         $new_concession->status = $request->status == true ? 1 : 0;
         $new_concession->save();
