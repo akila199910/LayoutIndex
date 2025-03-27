@@ -145,10 +145,10 @@ if (!function_exists('action_btns')) {
             $action .= '<a class="dropdown-item" title="Delete" href="javascript:;" onclick="deleteConfirmation(' . $route_id . ')" data-id="' . $route_id . '"><i class="fa-solid fas fa-trash m-r-5"></i> Delete</a>';
         }
 
-        if ($user->hasPermissionTo('Create_SendToKitchen') && $item->status == 0) {
+        if ($user->hasPermissionTo('Approve_Order') && $item->status == 0) {
             $action .= '<a class="dropdown-item" title="Approve" href="javascript:;" onclick="change_status(' . $route_id . ',1)" data-id="' . $route_id . '"><i class="fa-solid fas fa-check m-r-5"></i> Send To Kitchen</a>';
         }
-        if ($user->hasPermissionTo('Create_SendToKitchen') && $item->status == 1) {
+        if ($user->hasPermissionTo('Complete_Order') && $item->status == 1) {
             $action .= '<a class="dropdown-item" title="Approve" href="javascript:;" onclick="change_status(' . $route_id . ',2)" data-id="' . $route_id . '"><i class="fa-solid fas fa-check m-r-5"></i> Completed</a>';
         }
 

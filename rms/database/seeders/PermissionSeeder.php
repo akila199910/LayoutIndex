@@ -14,7 +14,7 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $action = ['Read', 'Create' , 'Update' , 'Delete'];
-        $permissions = ['Concession','Order', 'SendToKitchen', 'User'];
+        $permissions = ['Concession','Order', 'User'];
 
         $insert_data = [];
         foreach ($permissions as $key => $value) {
@@ -26,6 +26,17 @@ class PermissionSeeder extends Seeder
                     'updated_at' => date("Y-m-d H:i:s"),
                 ];
             }
+        }
+        
+        $customPermissions = ['Approve_Order', 'Complete_Order'];
+
+        foreach ($customPermissions as $permission) {
+            $insert_data[] = [
+                'name' => $permission,
+                'guard_name' => 'web',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
         }
 
         DB::table('permissions')->insert($insert_data);

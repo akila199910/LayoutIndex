@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Concession;
+use App\Models\Order;
 use App\Repositories\ConcessionRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -59,7 +60,11 @@ class ConcessionController extends Controller
                     $view_url = route('concessions.view_details', $item->ref_no);
 
                     $actions = '';
-                    $actions = action_btns($actions, $user, 'Concession', $edit_route, $item->id,'',$view_url);
+                    $item_cancel = new Order();
+                    $item_cancel->status = 5;
+
+                    $item->status;
+                    $actions = action_btns($actions, $user, 'Concession', $edit_route, $item->id,$item_cancel,$view_url);
 
                     $action = '<div class="dropdown dropdown-action">
                         <a href="javascript:;" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
