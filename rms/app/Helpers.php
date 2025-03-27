@@ -148,6 +148,9 @@ if (!function_exists('action_btns')) {
         if ($user->hasPermissionTo('Create_SendToKitchen') && $item->status == 0) {
             $action .= '<a class="dropdown-item" title="Approve" href="javascript:;" onclick="change_status(' . $route_id . ',1)" data-id="' . $route_id . '"><i class="fa-solid fas fa-check m-r-5"></i> Send To Kitchen</a>';
         }
+        if ($user->hasPermissionTo('Create_SendToKitchen') && $item->status == 1) {
+            $action .= '<a class="dropdown-item" title="Approve" href="javascript:;" onclick="change_status(' . $route_id . ',2)" data-id="' . $route_id . '"><i class="fa-solid fas fa-check m-r-5"></i> Completed</a>';
+        }
 
         if ($user->hasPermissionTo('Read_' . $permission) && $view_url != '') {
             $action .= '<a class="dropdown-item" title="View" href="' . $view_url . '"><i class="fa-solid fa-eye m-r-5"></i> View</a>';

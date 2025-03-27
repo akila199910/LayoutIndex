@@ -41,6 +41,13 @@ Route::middleware(['auth', 'isUserExist'])->group(function () {
     Route::post('/orders/concessions', [App\Http\Controllers\OrderController::class, 'update_status'])->name('orders.update_status');
 
 
+    Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
+    Route::get('/users/create', [App\Http\Controllers\UserController::class, 'create_form'])->name('users.create.form');
+    Route::post('/users/create', [App\Http\Controllers\UserController::class, 'create'])->name('users.create');
+    Route::get('/users/update/{id}', [App\Http\Controllers\UserController::class, 'update_form'])->name('users.update.form');
+    Route::post('/users/update', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
+    Route::post('/users/delete', [App\Http\Controllers\UserController::class, 'delete'])->name('users.delete');
+    Route::get('/users/view/{ref_no}', [App\Http\Controllers\UserController::class, 'view_details'])->name('users.view_details');
 
 
 });

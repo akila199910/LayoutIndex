@@ -35,8 +35,9 @@ class OrderController extends Controller
         if ($request->json) {
 
             $order = $this->order_repo->order_list($request);
+            $orders = $order->sortBy('kitchen_time');
 
-            $data =  DataTables::of($order)
+            $data =  DataTables::of($orders)
                 ->addIndexColumn()
 
                 ->addColumn('status', function ($item) {
@@ -47,7 +48,7 @@ class OrderController extends Controller
                     if ($item->status == 1) {
                         return '<span class="badge badge-soft-primary badge-borders">In Progress</span>';
                     }
-                    if ($item->status == 1) {
+                    if ($item->status == 2) {
                         return '<span class="badge badge-soft-success badge-borders">Completed</span>';
                     }
                 })

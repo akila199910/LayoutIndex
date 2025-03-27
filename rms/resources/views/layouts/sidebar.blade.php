@@ -93,46 +93,12 @@
             <ul class="nav user-menu float-end">
                 <li class="nav-item dropdown d-none d-md-block">
                     <div class="dropdown-container nav-link">
-                        {{-- <a href="#" data-dropdown="notificationMenu" class="menu-link has-notifications circle">
-                            <img src="{{ asset('layout_style/img/icons/bell-icon.png') }}" style="width: 32px" alt>
-                            @if (count($lowStocks))
-                                <span class="pulse"></span>
-                            @endif
-
-                        </a> --}}
                         <div class="dropdown-menu notifications show dropdown" name="notificationMenu"
                             style="position: absolute; inset:-35px -30px auto auto; margin: 0px; transform: translate3d(-72px, 72px, 0px);"
                             data-popper-placement="bottom-start">
                             <div class="topnav-dropdown-header">
                                 <span style="color: #2072AF">Low Stocks Details</span>
                             </div>
-                            <div class="drop-scroll">
-                                <ul class="notification-list">
-                                    {{-- @forelse($lowStocks as $item)
-                                        @if ($item->product_info && $item->warehouse_info)
-                                            <li class="notification-list-item p-2">
-                                                <div class="">
-                                                    <p class="message">Product Names : {{ $item->product_info->name }}
-                                                        (Stock:
-                                                        {{ $item->qty }})
-                                                    </p>
-                                                    <p class="message">Warehouse : {{ $item->warehouse_info->name }}</p>
-                                                </div>
-                                            </li>
-                                        @endif
-
-                                    @empty
-                                        <li class="notification-list-item" style="text-align: center">
-                                            <h4 class="message">No low-stock items.</h4>
-                                        </li>
-                                    @endforelse --}}
-                                </ul>
-                            </div>
-                            {{-- @if (count($lowStocks))
-                                <div class="topnav-dropdown-footer">
-                                    <a href="{{ route('business.low_stock') }}">View all Notifications</a>
-                                </div>
-                            @endif --}}
                         </div>
                     </div>
                 </li>
@@ -215,7 +181,7 @@
                             </li>
                         @endif
 
-                        @if (Auth::user()->hasPermissionTo('Read_Order'))
+                        @if (Auth::user()->hasPermissionTo('Read_Order') || Auth::user()->hasPermissionTo('Create_SendToKitchen'))
                         @php
                             $vendor_route_name = [
                                 'orders',
@@ -235,7 +201,30 @@
                             </a>
                         </li>
                     @endif
+
+                    @if (Auth::user()->hasPermissionTo('Read_User') )
+                    @php
+                        $vendor_route_name = [
+                            'users',
+                            'users.create.form',
+                            'users.update.form',
+                        ];
+                    @endphp
+
+                    <li>
+                        <a href="{{ route('users') }}"
+                            class="{{ in_array(request()->route()->getName(), $vendor_route_name) ? 'active' : '' }}">
+                            <span class="menu-side">
+                                <img src="{{ asset('layout_style/img/icons/user.png') }}" style="width: 24px"
+                                    alt>
+                            </span>
+                            <span>Users</span>
+                        </a>
+                    </li>
+                @endif
                     </ul>
+
+
 
                     <div class="logout-btn">
                         <a href="{{ route('logout') }}"
