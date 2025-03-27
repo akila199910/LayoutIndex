@@ -9,4 +9,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Order extends Model
 {
     use HasFactory, SoftDeletes;
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
 }
+
+

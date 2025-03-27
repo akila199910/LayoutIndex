@@ -1,7 +1,7 @@
 @extends('layouts.sidebar')
 
 @section('title')
-Manage Concessions
+Manage Orders
 @endsection
 
 @section('content')
@@ -9,13 +9,13 @@ Manage Concessions
         <div class="row">
             <div class="col-sm-8">
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('concessions') }}">Manage Concessions</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('orders') }}">Manage Orders</a></li>
                     <li class="breadcrumb-item"><i class="feather-chevron-right"></i></li>
-                    <li class="breadcrumb-item active">Update Concession</li>
+                    <li class="breadcrumb-item active">Update Orders</li>
                 </ul>
             </div>
             <div class="col-sm-4 text-end">
-                <a href="{{ route('concessions') }}" class="btn btn-primary btn-lg me-2" style='width:100px'>Back</a>
+                <a href="{{ route('orders') }}" class="btn btn-primary btn-lg me-2" style='width:100px'>Back</a>
             </div>
         </div>
     </div>
@@ -28,81 +28,80 @@ Manage Concessions
                     <div class="card-body">
                         <div class="row">
 
+                            <input type="hidden" name="id" value="{{ $find_order->id }}">
+                            <input type="hidden" name="status" value="{{ $find_order->status }}">
+
                             <div class="col-12">
+                                <div class="form-heading mb-3">
+                                    <h4>Update Order</h4>
+                                </div>
                                 <div class="form-heading">
-                                    <h4>Update Concession</h4>
+                                    <h4>Date and Time</h4>
+                                    <input type="datetime-local"
+                                           name="kitchen_time"
+                                           id="kitchen_time"
+                                           value="{{ \Carbon\Carbon::parse($find_order->kitchen_time)->format('Y-m-d\TH:i') }}">
+                                    <small class="text-danger font-weight-bold err_kitchen_time"></small>
                                 </div>
                             </div>
 
-                            <input type="hidden" name="id" value="{{$find_concession->id}}">
-
-                            <div class="col-12 col-md-6 col-xl-6">
-                                <div class="input-block local-forms">
-                                    <label for="name">Name <span class="text-danger">*</span> </label>
-                                    <input type="text" name="name" value="{{$find_concession->name}}" class="form-control name"
-                                        id="name" maxlength="190">
-                                    <small class="text-danger font-weight-bold err_name"></small>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-md-6 col-xl-6">
-                                <div class="input-block local-forms">
-                                    <label for="price">Price<span class="text-danger">*</span></label>
-                                    <input type="text" name="price" value="{{$find_concession->price}}" class="form-control price number_only_val"
-                                        id="price" maxlength="190">
-                                    <small class="text-danger font-weight-bold err_price"></small>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-md-6 col-xl-6">
-                                <div class="input-block local-forms">
-                                    <label for="description">Description</label>
-                                    <input type="text" name="description" value="{{$find_concession->description}}" class="form-control description"
-                                        id="description" maxlength="190">
-                                    <small class="text-danger font-weight-bold err_description"></small>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-xl-6">
-                                <div class="input-block local-forms">
-                                    <label>Image <small class="text-primary"></small></label>
-                                    <input class="upload-path form-control" disabled />
-                                    <div class="upload">
-                                        <input type="file" name="image" accept=".jpg, .jpeg, .png" class="form-control image" id="image"
-                                            maxlength="190">
-                                        <span class="custom-file-label" id="file-label">Choose File...</span>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-3">
+                                <div class="row">
+                                    <div class="col-12 mt-2">
+                                        <div class="form-heading">
+                                            <h5 class="text-info font-size-14 text-uppercase font-weight-bold">
+                                                Concessions
+                                            </h5>
+                                        </div>
                                     </div>
-                                    <small class="text-danger font-weight-bold err_image"></small>
+
+                                    @foreach ($concessions as $item)
+                                        @php
+                                            $isSelected = isset($selected_items[$item->id]);
+                                            $selectedQty = $isSelected ? $selected_items[$item->id]->qty : '';
+                                        @endphp
+
+                                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                                            <div class="profile-check-blk input-block">
+                                                <div class="remember-me">
+                                                    <label class="custom_check mr-2 mb-0 d-inline-flex remember-me w-100">
+                                                        <span class="flex-grow-1">{{ $item->name }}</span>
+
+                                                        <input type="checkbox"
+                                                               name="concessions[]"
+                                                               class="me-2"
+                                                               id="concession_{{ $item->id }}"
+                                                               value="{{ $item->id }}"
+                                                               onclick="toggleQty({{ $item->id }})"
+                                                               {{ $isSelected ? 'checked' : '' }}>
+
+                                                        <span class="checkmark"></span>
+                                                    </label>
+
+                                                    <input type="number"
+                                                           name="quantities[{{ $item->id }}]"
+                                                           id="qty_{{ $item->id }}"
+                                                           class="form-control mt-2 qty-input"
+                                                           placeholder="Qty"
+                                                           min="1"
+                                                           value="{{ $selectedQty }}"
+                                                           style="width: 80px; {{ $isSelected ? '' : 'display:none;' }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
+                                <small class="text-danger font-weight-bold err_concessions"></small>
                             </div>
-
-
-                            <div class="col-12 col-md-6 col-xl-6">
-                                <div class="input-block select-gender">
-                                    <label class="gen-label" for="status">Status Inactive/Active</label>
-                                    <div class="status-toggle d-flex justify-content-between align-items-center">
-                                        <input type="checkbox" id="status" name="status" {{$find_concession->status == 1 ? 'checked' : ''}} class="check">
-                                        <label for="status" class="checktoggle">checkbox</label>
-                                    </div>
-                                </div>
-                            </div>
-                        <div
-                            class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 text-center form-group mb-md-4 pb-3">
-
-                          <img src="{{ $find_concession->image ? config('aws_url.url') . $find_concession->image : asset('layout_style/img/default.png') }}"
-                          style="width:100px; height:100px; border-radius:50%;object-fit: cover; " class="stylist-image" alt="">
-
-                        </div>
-
-                        </div>
-                        @if (Auth::user()->hasPermissionTo('Update_Concession'))
-                                <div class="col-12">
-                                    <div class="doctor-submit text-end">
-                                        <button type="submit"
-                                            class="btn btn-primary text-uppercase submit-form me-2">Update</button>
-                                    </div>
-                                </div>
-                         @endif
                     </div>
+                    @if (Auth::user()->hasPermissionTo('Update_Order'))
+                    <div class="col-12">
+                        <div class="doctor-submit text-end">
+                            <button type="submit"
+                                class="btn btn-primary text-uppercase submit-form me-2">Update</button>
+                        </div>
+                    </div>
+                @endif
                 </div>
             </div>
         </form>
@@ -117,7 +116,27 @@ Manage Concessions
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             })
-        })
+
+            $('input[type="checkbox"][name="concessions[]"]').each(function () {
+            if ($(this).is(':checked')) {
+                $('#qty_' + $(this).val()).show();
+            }
+    });
+})
+    function toggleQty(id) {
+                const checkbox = document.getElementById('concession_' + id);
+                const qtyInput = document.getElementById('qty_' + id);
+
+                if (checkbox.checked) {
+                    qtyInput.style.display = 'block';
+                    qtyInput.required = true;
+                } else {
+                    qtyInput.style.display = 'none';
+                    qtyInput.required = false;
+                    qtyInput.value = '';
+                }
+            }
+
 
         $('#submitForm').submit(function(e) {
             e.preventDefault();
@@ -128,7 +147,7 @@ Manage Concessions
                 beforeSend: function() {
                     $("#loader").show();
                 },
-                url: "{{ route('concessions.update') }}",
+                url: "{{ route('orders.update') }}",
                 data: formData,
                 contentType: false,
                 cache: false,

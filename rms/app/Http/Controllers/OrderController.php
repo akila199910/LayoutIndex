@@ -117,7 +117,6 @@ class OrderController extends Controller
             ]
         );
 
-        // dd($request->all());
             $concessions = $request->input('concessions', []);
             $quantities = $request->input('quantities', []);
 
@@ -162,32 +161,58 @@ class OrderController extends Controller
         }
 
         $find_order = Order::where(['ref_no' => $id])->first();
+        $concessions = Concession::where('status', 1)->get();
+
 
         if (!$find_order) {
             return abort(404);
         }
 
         return view('orders.update',[
-            'find_order' => $find_order
+            'find_order' => $find_order,
+            'concessions' => $concessions,
+            'selected_items' => $find_order->orderItems->keyBy('concession_id')
         ]);
     }
 
     public function update(Request $request)
     {
-        $id = $request->id;
-
         $validator = Validator::make(
             $request->all(),
             [
-                'name' => 'required|regex:/^[a-z A-Z 0-9]+$/u|max:190|unique:concessions,name,'.$id.',id,deleted_at,NULL',
-                'image'=>'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
-                'price' => 'required',
-                'description' => 'nullable|max:190',
+                'concessions' => 'required|array|min:1',
+                'concessions.*' => 'exists:concessions,id',
+                'kitchen_time' => 'required',
+            ],
+            [
+                'concessions.required' => 'Please select at least one item.',
+                'concessions.*.exists' => 'Invalid concession selected.',
             ]
         );
-        if ($validator->fails()) {
-            return response()->json(['status' => false,  'message' => $validator->errors()]);
-        }
+
+            $concessions = $request->input('concessions', []);
+            $quantities = $request->input('quantities', []);
+
+
+            if ($validator->fails()) {
+                return response()->json(['status' => false,  'message' => $validator->errors()]);
+            }
+
+
+            $total_price = 0;
+            $concession_items = Concession::whereIn('id', $concessions)->get();
+
+            foreach ($concession_items as $item) {
+                $qty = $quantities[$item->id];
+                $total_price += $item->price * $qty;
+            }
+
+            $request->merge([
+                'total_price' => $total_price,
+                'concessions' => $concessions,
+                'quantities' => $quantities
+            ]);
+
 
         $data = $this->order_repo->update($request);
 

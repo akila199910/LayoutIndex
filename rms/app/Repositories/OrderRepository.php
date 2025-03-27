@@ -63,10 +63,38 @@ class OrderRepository
 
         $find_order = Order::find($request->id);
 
+        OrderItem::where('order_id', $find_order->id)
+        ->whereNotIn('concession_id', $request->concessions)
+        ->delete();
+        
         $find_order->total_price = $request->total_price;
         $find_order->kitchen_time = $request->kitchen_time;
         $find_order->status = $request->status;
+        $find_order->discount_amount = $request->discount_amount;
         $find_order->update();
+
+        for ($i = 0; $i < count($request->concessions); $i++) {
+            $concession_id = $request->concessions[$i];
+            $quantity = $request->quantities[$concession_id] ?? null;
+
+            if ($quantity !== null && $quantity > 0) {
+                $order_concession =  OrderItem::where(['order_id' => $find_order->id, 'concession_id' => $concession_id])->first();
+
+                if (!$order_concession) {
+                    $order_concession = new OrderItem();
+                    $order_concession->order_id = $find_order->id;
+                    $order_concession->concession_id = $concession_id;
+                    $order_concession->qty = $quantity;
+                    $order_concession->save();
+
+                }
+
+                $order_concession->order_id = $find_order->id;
+                $order_concession->concession_id = $concession_id;
+                $order_concession->qty = $quantity;
+                $order_concession->update();
+            }
+        }
 
         return [
             'status' => true,
