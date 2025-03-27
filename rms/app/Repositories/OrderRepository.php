@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Support\Facades\Storage;
 
 class OrderRepository
@@ -22,17 +23,37 @@ class OrderRepository
         $new_order->total_price = $request->total_price;
         $new_order->kitchen_time = $request->kitchen_time;
         $new_order->status = 0;
+        $new_order->created_by = $request->created_by;
+        $new_order->discount_amount = $request->discount_amount;
         $new_order->save();
 
         $ref_no = refno_generate(16, 2, $new_order->id);
         $new_order->ref_no = $ref_no;
         $new_order->update();
 
+        for ($i = 0; $i < count($request->concessions); $i++) {
+            $concession_id = $request->concessions[$i];
+            $quantity = $request->quantities[$concession_id] ?? null;
+
+            if ($quantity !== null && $quantity > 0) {
+                $order_concession = new OrderItem();
+                $order_concession->order_id = $new_order->id;
+                $order_concession->concession_id = $concession_id;
+                $order_concession->qty = $quantity;
+                $order_concession->save();
+            }
+        }
+
+
+
         return [
             'id' => $new_order->id,
             'total_price' => $new_order->total_price,
             'ref_no' => $new_order->ref_no,
-            'kitchen_time' => $new_order->kitchen_time
+            'kitchen_time' => $new_order->kitchen_time,
+            'status' => $new_order->status,
+            'created_by' => $new_order->created_by,
+            'discount_amount' => $new_order->discount_amount
         ];
 
    }

@@ -51,6 +51,13 @@ class OrderController extends Controller
                         return '<span class="badge badge-soft-success badge-borders">Completed</span>';
                     }
                 })
+                ->addColumn('discount_amount', function ($item) {
+                    $discount_amount = 'N/A';
+                    if ($item->discount_amount ) {
+                        $discount_amount = $item->discount_amount;
+                    }
+                    return $discount_amount;
+                })
 
                 ->addColumn('action', function ($item) {
                     $user = Auth::user();
@@ -70,7 +77,7 @@ class OrderController extends Controller
 
                     return $action;
                 })
-                ->rawColumns(['action', 'status'])
+                ->rawColumns(['action', 'status', 'discount_amount'])
                 ->make(true);
 
             return $data;
@@ -100,16 +107,40 @@ class OrderController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'name' => 'required|regex:/^[a-z 0-9 A-Z]+$/u|max:190|unique:concessions,name,NULL,id,deleted_at,NULL',
-                'image'=>'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
-                'price' => 'required',
-                'description' => 'nullable|max:190',
+                'concessions' => 'required|array|min:1',
+                'concessions.*' => 'exists:concessions,id',
+                'kitchen_time' => 'required',
+            ],
+            [
+                'concessions.required' => 'Please select at least one item.',
+                'concessions.*.exists' => 'Invalid concession selected.',
             ]
         );
 
-        if ($validator->fails()) {
-            return response()->json(['status' => false,  'message' => $validator->errors()]);
-        }
+        // dd($request->all());
+            $concessions = $request->input('concessions', []);
+            $quantities = $request->input('quantities', []);
+
+
+            if ($validator->fails()) {
+                return response()->json(['status' => false,  'message' => $validator->errors()]);
+            }
+
+
+            $total_price = 0;
+            $concession_items = Concession::whereIn('id', $concessions)->get();
+
+            foreach ($concession_items as $item) {
+                $qty = $quantities[$item->id];
+                $total_price += $item->price * $qty;
+            }
+
+            $request->merge([
+                'total_price' => $total_price,
+                'created_by' => Auth::user()->id,
+                'concessions' => $concessions,
+                'quantities' => $quantities
+            ]);
 
         $data = $this->order_repo->create($request);
 

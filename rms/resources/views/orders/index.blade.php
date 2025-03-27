@@ -43,8 +43,8 @@ Manage Orders
                                 <tr>
                                     <th style="width: 20px">#</th>
                                     <th>Ref No</th>
-                                    <th>Total</th>
-                                    <th>Price</th>
+                                    <th>Total Price</th>
+                                    <th>Discount</th>
                                     <th>Kitchen Time</th>
                                     <th>Status</th>
                                     <th class="text-end"></th>
@@ -91,6 +91,11 @@ Manage Orders
                         {
                             data: 'total_price',
                             name: 'total_price',
+                            orderable: false,
+                        },
+                        {
+                            data: 'discount_amount',
+                            name: 'discount_amount',
                             orderable: false,
                         },
                         {

@@ -29,9 +29,14 @@ Manage Orders
                     <div class="card-body">
                         <div class="row">
 
-                            <div class="col-12">
-                                <div class="form-heading">
+                            <div class="col-12 mb-3">
+                                <div class="form-heading mb-3">
                                     <h4>Add new Order</h4>
+                                </div>
+                                <div class="form-heading">
+                                    <h4>Date and Time</h4>
+                                    <input type="datetime-local" name="kitchen_time" id="kitchen_time" >
+                                    <small class="text-danger font-weight-bold err_kitchen_time"></small>
                                 </div>
                             </div>
 
@@ -76,7 +81,14 @@ Manage Orders
                                 <small class="text-danger font-weight-bold err_concessions"></small>
                             </div>
                         </div>
-
+                        @if (Auth::user()->hasPermissionTo('Create_Order'))
+                        <div class="col-12">
+                            <div class="doctor-submit text-end">
+                                <button type="submit"
+                                    class="btn btn-primary text-uppercase submit-form me-2">Create</button>
+                            </div>
+                        </div>
+                    @endif
                     </div>
                 </div>
             </div>
@@ -127,10 +139,13 @@ Manage Orders
                     $("#loader").hide();
                     errorClear()
                     if (response.status == false) {
+                        let shownFields = [];
+
                         $.each(response.message, function(key, item) {
                             if (key) {
-                                $('.err_' + key).text(item)
+                                $('.err_' + key).text(item);
                                 $('#' + key).addClass('is-invalid');
+                                shownFields.push(key);
                             }
                         });
                     } else {
@@ -155,8 +170,9 @@ Manage Orders
 
         function errorClear()
         {
-            $('#name').removeClass('is-invalid')
-            $('.err_name').text('')
+            $('#kitchen_time').removeClass('is-invalid')
+            $('.err_kitchen_time').text('')
+            $('.err_concessions').text('')
 
         }
     </script>
