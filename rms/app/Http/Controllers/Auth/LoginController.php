@@ -52,7 +52,7 @@ class LoginController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'email' => 'required|email:rfc,dns|max:190',
+                'email' => 'required|email|max:190',
                 'password' => 'required|min:8',
             ]
         );
@@ -81,7 +81,7 @@ class LoginController extends Controller
             $route = route('dashboard');
 
             return response()->json(['status' => true, 'message' => 'Success', 'route' => $route]);
-            
+
         } else {
 
             return response()->json(['status' => false, 'errors' => [

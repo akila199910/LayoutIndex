@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Concession;
 use App\Models\Order;
+use App\Repositories\ConcessionRepository;
 use App\Repositories\OrderRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,10 +14,12 @@ use Yajra\DataTables\DataTables;
 class OrderController extends Controller
 {
     private $order_repo;
+    private $concession_repo;
 
     function __construct()
     {
         $this->order_repo = new OrderRepository();
+        $this->concession_repo = new ConcessionRepository();
     }
 
     public function index(Request $request)
@@ -85,7 +88,11 @@ class OrderController extends Controller
             return abort(403);
         }
 
-        return view('orders.create');
+        $concessions = Concession::where('status', 1)->get();
+
+        return view('orders.create', [
+            'concessions' => $concessions
+        ]);
     }
 
     public function create(Request $request)
@@ -185,6 +192,15 @@ class OrderController extends Controller
 
         return view('orders.view_details', [
             'orders' =>  $orders
+        ]);
+    }
+
+    public function get_concessions(Request $request)
+    {
+        $concessions_item = $this->concession_repo->concessions_list($request)->first();
+
+        return view('orders._concession_div', [
+            'concessions_item' => $concessions_item
         ]);
     }
 }

@@ -11,6 +11,8 @@ class ConcessionRepository
     public function concessions_list($request)
     {
         $concessions = Concession::all();
+        if (isset($request->concession_id) && !empty($request->concession_id))
+            $concessions = $concessions->where('id', $request->concession_id);
 
         return $concessions;
     }
