@@ -1,7 +1,7 @@
 @extends('layouts.sidebar')
 
 @section('title')
- Manage Concessions
+ Manage Orders
 @endsection
 
 @section('content')
@@ -9,13 +9,13 @@
         <div class="row">
             <div class="col-sm-8">
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('concessions') }}">Manage Concessions</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('orders') }}">Manage Orders</a></li>
                     <li class="breadcrumb-item"><i class="feather-chevron-right"></i></li>
-                    <li class="breadcrumb-item active">Category Details</li>
+                    <li class="breadcrumb-item active">Order Details</li>
                 </ul>
             </div>
             <div class="col-sm-4 text-end">
-                <a href="{{ route('concessions') }}" class="btn btn-primary btn-lg me-2" style='width:100px'>Back</a>
+                <a href="{{ route('orders') }}" class="btn btn-primary btn-lg me-2" style='width:100px'>Back</a>
             </div>
         </div>
     </div>
@@ -30,35 +30,20 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="doctor-table-blk mb-4 pt-2">
-                                            <h3 class="text-uppercase">Concession Details</h3>
+                                            <h3 class="text-uppercase">Order Details</h3>
                                         </div>
                                         <div class="row  align-items-center">
-                                            <div class="col-xl-4 col-md-4 text-center">
-                                                <div class="detail-personal">
-                                                    <h3>
-                                                        @if ($concessions->image && $concessions->image != 0)
-                                                        <img src="{{ config('awsurl.url') . $concessions->image }}"
-                                                            alt="Product Image" height="100px" width="100px"
-                                                            style="border-radius:50%;object-fit: cover; align:center" class="stylist-image">
-                                                    @else
-                                                        <img src="{{ asset('layout_style/img/default.png') }}"
-                                                            alt="Default Image" height="100px" width="100px"
-                                                            style="border-radius:50%;object-fit: cover; align:center" class="stylist-image" >
-                                                    @endif
-
-                                                    </h3>
-                                                </div>
-                                            </div>
                                             <div class="col-xl-8 col-md-8">
+
                                                 <div class="row mb-3">
                                                     <div class="col-xl-4 col-md-4">
                                                         <div class="detail-personal">
-                                                            <h2>Name</h2>
+                                                            <h2>Order Ref No</h2>
                                                         </div>
                                                     </div>
                                                     <div class="col-xl-4 col-md-4">
                                                         <div class="detail-personal">
-                                                            <h3>{{ $concessions->name ? Str::limit(ucwords($concessions->name), 30) : 'N/A' }}</h3>
+                                                            <h3>{{ $orders->ref_no ? $orders->ref_no : 'N/A' }}</h3>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -66,12 +51,12 @@
                                                 <div class="row mb-3">
                                                     <div class="col-xl-4 col-md-4">
                                                         <div class="detail-personal">
-                                                            <h2>Price</h2>
+                                                            <h2>Total Price</h2>
                                                         </div>
                                                     </div>
                                                     <div class="col-xl-4 col-md-4">
                                                         <div class="detail-personal">
-                                                            <h3>{{ $concessions->price ? $concessions->price : 'N/A' }}</h3>
+                                                            <h3>{{ $orders->total_price ? $orders->total_price : 'N/A' }}</h3>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -79,12 +64,25 @@
                                                 <div class="row mb-3">
                                                     <div class="col-xl-4 col-md-4">
                                                         <div class="detail-personal">
-                                                            <h2>Description</h2>
+                                                            <h2>Discount Amount</h2>
                                                         </div>
                                                     </div>
                                                     <div class="col-xl-4 col-md-4">
                                                         <div class="detail-personal">
-                                                            <h3>{{ $concessions->description ? $concessions->description : 'N/A' }}</h3>
+                                                            <h3>{{ $orders->discount_amount ? $orders->discount_amount : 'N/A' }}</h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-3">
+                                                    <div class="col-xl-4 col-md-4">
+                                                        <div class="detail-personal">
+                                                            <h2>Created By</h2>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-4 col-md-4">
+                                                        <div class="detail-personal">
+                                                            <h3>{{ $orders->createdBy ? $orders->createdBy->name : 'N/A' }}</h3>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -95,23 +93,40 @@
                                                             <h2>Status</h2>
                                                         </div>
                                                     </div>
-                                                    <div class="col-xl-4 col-md-4">
+                                                    <div class="col-xl-4 col-md-4 mb-3">
                                                         <div class="detail-personal">
-                                                            <h3>
-                                                                @php
-                                                                    $status =
-                                                                        $concessions->status == 1
-                                                                            ? 'Active'
-                                                                            : 'Inactive';
-                                                                    $badgeClass =
-                                                                        $concessions->status == 1
-                                                                            ? 'custom-badge status-green'
-                                                                            : 'custom-badge status-red';
-                                                                @endphp
-                                                                <span class="{{ $badgeClass }}">{{ $status }}</span>
-                                                            </h3>
+                                                            @php
+                                                            $statuses = [
+                                                                0 => ['label' => 'Pending', 'class' => 'custom-badge status-red'],
+                                                                1 => ['label' => 'In progress', 'class' => 'custom-badge status-yellow'],
+                                                                2 => ['label' => 'Completed', 'class' => 'custom-badge status-green'],
+                                                            ];
+
+                                                            $statusInfo = $statuses[$orders->status] ?? ['label' => 'Unknown', 'class' => 'custom-badge'];
+                                                        @endphp
+
+                                                        <h3>
+                                                            <span class="{{ $statusInfo['class'] }}">{{ $statusInfo['label'] }}</span>
+                                                        </h3>
+
                                                         </div>
                                                     </div>
+                                                    <hr>
+                                                    <h3 class="text-uppercase mb-3">Order Items</h3>
+                                                    @foreach ($orders->orderItems as $orderItem)
+                                                        <div class="row mb-3">
+                                                            <div class="col-xl-4 col-md-4">
+                                                                <div class="detail-personal">
+                                                                    <h2>{{ $orderItem->concession_info ? $orderItem->concession_info->name : 'N/A' }}</h2>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-4 col-md-4">
+                                                                <div class="detail-personal">
+                                                                    <h3>{{ $orderItem->qty ? $orderItem->qty : 'N/A' }}</h3>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
                                                 </div>
 
                                             </div>

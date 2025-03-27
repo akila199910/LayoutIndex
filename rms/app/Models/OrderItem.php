@@ -12,7 +12,9 @@ class OrderItem extends Model
 
     protected $fillable = [
         'order_id',
-
     ];
 
+    public function concession_info(){
+        return $this->hasOne(Concession::class, 'id', 'concession_id');
+    }
 }
