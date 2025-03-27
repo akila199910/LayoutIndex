@@ -65,7 +65,7 @@ class OrderController extends Controller
                     $view_url = route('orders.view_details', $item->ref_no);
 
                     $actions = '';
-                    $actions = action_btns($actions, $user, 'Order', $edit_route, $item->id,'',$view_url);
+                    $actions = action_btns($actions, $user, 'Order', $edit_route, $item->id,$item,$view_url);
 
                     $action = '<div class="dropdown dropdown-action">
                         <a href="javascript:;" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -258,5 +258,16 @@ class OrderController extends Controller
         return view('orders._concession_div', [
             'concessions_item' => $concessions_item
         ]);
+    }
+
+    public function update_status(Request $request)
+    {
+        Order::where('id', $request->order_id)->update(['status' => $request->status]);
+
+        $data['status'] = true;
+        $data['message'] = 'Order Status Updated Successfully!';
+        $data['route'] = route('orders');
+
+        return response()->json($data);
     }
 }

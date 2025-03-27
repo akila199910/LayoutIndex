@@ -38,6 +38,8 @@ Route::middleware(['auth', 'isUserExist'])->group(function () {
     Route::get('/orders/view/{ref_no}', [App\Http\Controllers\OrderController::class, 'view_details'])->name('orders.view_details');
 
     Route::get('/orders/concessions', [App\Http\Controllers\OrderController::class, 'get_concessions'])->name('orders.concession');
+    Route::post('/orders/concessions', [App\Http\Controllers\OrderController::class, 'update_status'])->name('orders.update_status');
+
 
 
 

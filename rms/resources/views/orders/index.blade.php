@@ -118,7 +118,74 @@ Manage Orders
                     ]
             });
         }
+        function change_status(order_id, status) {
+            var data = {
+                'order_id': order_id,
+                'status': status,
+                "_token": $('input[name=_token]').val(),
+            }
 
+            var message = 'Do you want to update the Selected Orders status?'
+
+            $.confirm({
+                theme: 'modern',
+                columnClass: 'col-lg-6 col-md-8 col-sm-10 col-12',
+                icon: 'far fa-question-circle text-danger',
+                title: 'Are you Sure!',
+                content: message,
+                type: 'red',
+                autoClose: 'cancel|10000',
+                buttons: {
+                    confirm: {
+                        text: 'Yes',
+                        btnClass: 'btn-green',
+                        action: function() {
+                            $("#loader").show();
+
+                            $.ajax({
+                                type: "POST",
+                                url: "{{ route('orders.update_status') }}",
+                                data: data,
+                                success: function(response) {
+                                    $("#loader").hide();
+
+                                    if (response.status == false) {
+                                        errorPopup(response.message, '')
+                                    } else {
+                                        successPopup(response.message, '')
+                                    }
+
+                                    table.clear();
+                                    table.ajax.reload();
+                                    table.draw();
+                                },
+                                statusCode: {
+                                    401: function() {
+                                        window.location.href =
+                                            '{{ route('login') }}'; //or what ever is your login URI
+                                    },
+                                    419: function() {
+                                        window.location.href =
+                                            '{{ route('login') }}'; //or what ever is your login URI
+                                    },
+                                },
+                                error: function(data) {
+                                    someThingWrong();
+                                }
+                            });
+                        }
+                    },
+
+                    cancel: {
+                        text: 'Cancel',
+                        btnClass: 'btn-red',
+                        action: function() {
+
+                        }
+                    },
+                }
+            });
+        }
         function deleteConfirmation(id) {
             $.confirm({
                 theme: 'modern',
