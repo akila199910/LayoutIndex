@@ -492,7 +492,7 @@ table.table td h2 span {
 
 .btn-primary {
     border-color: transparent;
-    background-color: #2072AF;
+    background-color: #151515;
     border-radius: 8px;
 }
 
@@ -502,8 +502,8 @@ table.table td h2 span {
 .btn-primary:active,
 .open>.dropdown-toggle.btn-primary {
     /* background-color: #00d3c7; */
-    background-color: #2072AF;
-    border: 1px solid #2072AF;
+    background-color: #373738;
+    border: 1px solid #373738;
     /* border: 1px solid #00d3c7; */
     color: #fff
 }
@@ -1173,7 +1173,7 @@ textarea.form-control {
 }
 
 .admin-dashboard .logo span , .admin-dashboard .user-names h5 {
-    color: #2072AF !important;
+    color: #282929 !important;
 }
 
 .sidebar-inner {
@@ -2435,7 +2435,7 @@ table.dataTable thead .sorting:before {
 .doctor-box-icon {
     width: 66px;
     height: 66px;
-    background: #2072AF;
+    background: #383b3e;
     border-radius: 12px;
     margin-right: 10px;
     display: -webkit-box;
@@ -7641,7 +7641,7 @@ a.btn.add-links:hover {
 .breadcrumb-item.active {
     /* color: rgba(46, 55, 164, .5) */
     /* color: rgb(61 78 59 / 50%); */
-    color: #2072AF;
+    color: #373738;
 }
 
 

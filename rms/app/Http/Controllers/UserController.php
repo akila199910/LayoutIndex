@@ -182,8 +182,6 @@ class UserController extends Controller
             return abort(404);
         }
 
-        //check user exist with current location
-
         $action = ['Read', 'Create', 'Update', 'Delete'];
         $permissions = [
             'User',
@@ -206,7 +204,6 @@ class UserController extends Controller
         $user_permission = $user->getDirectPermissions()->pluck('name')->toArray();
 
         return view('users.update', [
-            // 'action' => $action,
             'permissions' => $permissions,
             'permission_list' => $permission_list,
             'user_permission' => $user_permission,

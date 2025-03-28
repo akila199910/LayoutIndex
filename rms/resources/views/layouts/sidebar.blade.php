@@ -91,18 +91,6 @@
 
 
             <ul class="nav user-menu float-end">
-                <li class="nav-item dropdown d-none d-md-block">
-                    <div class="dropdown-container nav-link">
-                        <div class="dropdown-menu notifications show dropdown" name="notificationMenu"
-                            style="position: absolute; inset:-35px -30px auto auto; margin: 0px; transform: translate3d(-72px, 72px, 0px);"
-                            data-popper-placement="bottom-start">
-                            <div class="topnav-dropdown-header">
-                                <span style="color: #2072AF">Low Stocks Details</span>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
 
                 <li class="nav-item dropdown has-arrow user-profile-list">
                     <a href="#" class="dropdown-toggle nav-link user-link" data-bs-toggle="dropdown">
@@ -147,13 +135,11 @@
             <div class="sidebar-inner slimscroll">
                 <div id="sidebar-menu" class="sidebar-menu">
                     <ul>
-                        <li class="menu-title">RMS</li>
-
                         <li>
                             <a href="{{ route('dashboard') }}"
                                 class="{{ request()->route()->getName() == 'dashboard' ? 'active' : '' }}">
                                 <span class="menu-side">
-                                    <img src="{{ asset('layout_style/img/icons/dashboard_admin.png') }}"
+                                    <img src="{{ asset('layout_style/img/icons/dashboard.png') }}"
                                         style="width: 24px" alt>
                                 </span>
                                 <span>Dashboard</span>
@@ -173,7 +159,7 @@
                                 <a href="{{ route('concessions') }}"
                                     class="{{ in_array(request()->route()->getName(), $vendor_route_name) ? 'active' : '' }}">
                                     <span class="menu-side">
-                                        <img src="{{ asset('layout_style/img/icons/user.png') }}" style="width: 24px"
+                                        <img src="{{ asset('layout_style/img/icons/menu.png') }}" style="width: 24px"
                                             alt>
                                     </span>
                                     <span>Concessions</span>
@@ -194,7 +180,7 @@
                             <a href="{{ route('orders') }}"
                                 class="{{ in_array(request()->route()->getName(), $vendor_route_name) ? 'active' : '' }}">
                                 <span class="menu-side">
-                                    <img src="{{ asset('layout_style/img/icons/user.png') }}" style="width: 24px"
+                                    <img src="{{ asset('layout_style/img/icons/images.png') }}" style="width: 24px"
                                         alt>
                                 </span>
                                 <span>Orders</span>
@@ -215,7 +201,7 @@
                         <a href="{{ route('users') }}"
                             class="{{ in_array(request()->route()->getName(), $vendor_route_name) ? 'active' : '' }}">
                             <span class="menu-side">
-                                <img src="{{ asset('layout_style/img/icons/user.png') }}" style="width: 24px"
+                                <img src="{{ asset('layout_style/img/icons/usernew.png') }}" style="width: 24px"
                                     alt>
                             </span>
                             <span>Users</span>
@@ -229,7 +215,7 @@
                     <div class="logout-btn">
                         <a href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><span
-                                class="menu-side"><img src="{{ asset('layout_style/img/icons/logout.ico') }}"
+                                class="menu-side"><img src="{{ asset('layout_style/img/icons/logoutnew.png') }}" style="width: 24px"
                                     alt></span>
                             <span>Logout</span></a>
                     </div>
