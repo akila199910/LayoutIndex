@@ -40,6 +40,8 @@ Manage Orders
                                     <input type="datetime-local"
                                            name="kitchen_time"
                                            id="kitchen_time"
+                                           class="form-control"
+                                            style="padding: 10px; border-radius: 8px; max-width: 300px;"
                                            value="{{ \Carbon\Carbon::parse($find_order->kitchen_time)->format('Y-m-d\TH:i') }}">
                                     <small class="text-danger font-weight-bold err_kitchen_time"></small>
                                 </div>
@@ -92,6 +94,14 @@ Manage Orders
                                     @endforeach
                                 </div>
                                 <small class="text-danger font-weight-bold err_concessions"></small>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-6">
+                                <div class="input-block local-forms">
+                                    <label>Discount Amount <span class="login-danger"></span></label>
+                                    <input type="text" name="discount_amount" class="form-control discount_amount number_only_val" id="discount_amount" value="{{ $find_order->discount_amount }}"
+                                        maxlength="190">
+                                    <small class="text-danger font-weight-bold err_discount_amount"></small>
+                                </div>
                             </div>
                     </div>
                     @if (Auth::user()->hasPermissionTo('Update_Order'))

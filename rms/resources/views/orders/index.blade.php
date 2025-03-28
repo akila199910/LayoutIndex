@@ -37,6 +37,18 @@ Manage Orders
                         </div>
                     </div>
 
+                    <div class="col-12 col-md-6 col-xl-3 m-3">
+                        <div class="input-block local-forms">
+                            <label>Select status </label>
+                            <select class="form-control select2" id="filter" name="status">
+                                <option value="">--All status--</option>
+                                <option value="0">Pending</option>
+                                <option value="1">In Progress</option>
+                                <option value="2">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="table-responsive">
                         <table class="table table-stripped " id="data_table">
                             <thead>
@@ -65,6 +77,10 @@ Manage Orders
             loadData()
         });
 
+        $('#filter').on('change', function() {
+                table.draw();
+         });
+
             function loadData() {
                 table = $('#data_table').DataTable({
                     "stripeClasses": [],
@@ -74,7 +90,12 @@ Manage Orders
                     serverSide: true,
                     orderable: false,
                     ajax: {
-                        url: "{{ route('orders', ['json' => 1]) }}"
+                        url: "{{ route('orders', ['json' => 1]) }}",
+                        data: function(d) {
+                        d.json = 1;
+                        d.filter = $('#filter').val();
+                        console.log(d.from)
+                    }
                     },
                     columns: [{
                             data: 'DT_RowIndex',

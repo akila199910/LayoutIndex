@@ -16,6 +16,10 @@ class OrderRepository
 
         $orders = Order::all();
 
+        if(isset($request->filter)){
+            return  $orders->where('status',$request->filter);
+        }
+
         if ($request->day == 'today') {
 
             $orders = $orders->filter(function ($order) use ($today, $request) {
@@ -56,7 +60,7 @@ class OrderRepository
     {
 
         $new_order = new Order();
-        $new_order->total_price = $request->total_price;
+        $new_order->total_price = max(0, $request->total_price - ($request->discount_amount ?? 0));
         $new_order->kitchen_time = $request->kitchen_time;
         $new_order->status = 0;
         $new_order->created_by = $request->created_by;
@@ -103,7 +107,7 @@ class OrderRepository
         ->whereNotIn('concession_id', $request->concessions)
         ->delete();
 
-        $find_order->total_price = $request->total_price;
+        $find_order->total_price = max(0, $request->total_price - ($request->discount_amount ?? 0));
         $find_order->kitchen_time = $request->kitchen_time;
         $find_order->status = $request->status;
         $find_order->discount_amount = $request->discount_amount;
