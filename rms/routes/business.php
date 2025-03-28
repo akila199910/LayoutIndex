@@ -15,10 +15,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth', 'isUserExist'])->group(function () {
 
     //Dashboard
-    // Route::get('/dashboard', [App\Http\Controllers\Business\DashboardController::class, 'index'])->name('business.dashboard');
-    // Route::get('/dashboard/graph', [App\Http\Controllers\Business\DashboardController::class, 'graph'])->name('dashboard.graph');
-    // Route::post('/dashboard/get_purchase', [App\Http\Controllers\Business\DashboardController::class, 'get_purchase'])->name('dashboard.get_purchase');
-    // Route::get('/dashboard/get_purchase_list', [App\Http\Controllers\Business\DashboardController::class, 'get_purchase_list'])->name('dashboard.get_purchase_list');
+    Route::post('/dashboard', [App\Http\Controllers\DashboardController::class, 'getOrders'])->name('dashboard.order');
+    Route::get('/dashboard/graph', [App\Http\Controllers\DashboardController::class, 'graph'])->name('dashboard.graph');
+    Route::post('/dashboard/get_purchase', [App\Http\Controllers\DashboardController::class, 'get_purchase'])->name('dashboard.get_purchase');
+    Route::get('/dashboard/get_purchase_list', [App\Http\Controllers\DashboardController::class, 'get_purchase_list'])->name('dashboard.get_purchase_list');
 
 
     Route::get('/concessions', [App\Http\Controllers\ConcessionController::class, 'index'])->name('concessions');
