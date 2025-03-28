@@ -19,10 +19,10 @@ class DashboardController extends Controller
     public function index() {
 
         $today = now()->toDateString();
-        $toDayTotalOrders = DB::table('orders')->where('deleted_at', NULL)->where('kitchen_time',$today)->count();
-        $toDayPendingOrders = DB::table('orders')->where('deleted_at', NULL)->where('status',0)->where('kitchen_time',$today)->count();
-        $toDayProgressOrders = DB::table('orders')->where('deleted_at', NULL)->where('status',1)->where('kitchen_time',$today)->count();
-        $toDayCompleteOrders = DB::table('orders')->where('deleted_at', NULL)->where('status',2)->where('kitchen_time',$today)->count();
+        $toDayTotalOrders = DB::table('orders')->where('deleted_at', NULL)->whereDate('kitchen_time', $today)->count();
+        $toDayPendingOrders = DB::table('orders')->where('deleted_at', NULL)->where('status',0)->whereDate('kitchen_time', $today)->count();
+        $toDayProgressOrders = DB::table('orders')->where('deleted_at', NULL)->where('status',1)->whereDate('kitchen_time', $today)->count();
+        $toDayCompleteOrders = DB::table('orders')->where('deleted_at', NULL)->where('status',2)->whereDate('kitchen_time', $today)->count();
 
         $upComingTotalOrders = DB::table('orders')->where('deleted_at', NULL)->where('kitchen_time','>=',$today)->count();
         $upComingPendingOrders = DB::table('orders')->where('deleted_at', NULL)->where('status',0)->where('kitchen_time','>=',$today)->count();

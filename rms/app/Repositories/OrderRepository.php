@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class OrderRepository
@@ -11,7 +12,42 @@ class OrderRepository
 
     public function order_list($request)
     {
+        $today = now()->toDateString();
+
         $orders = Order::all();
+
+        if ($request->day == 'today') {
+
+            $orders = $orders->filter(function ($order) use ($today, $request) {
+                $isToday = Carbon::parse($order->kitchen_time)->toDateString() === $today;
+
+                if (isset($request->status) && $request->status !== '') {
+                    return $isToday && $order->status == $request->status;
+                }
+
+                return $isToday;
+            });
+        }
+
+        if ($request->day == 'upcoming') {
+            $orders = $orders->filter(function ($order) use ($request) {
+                $isUpcoming = Carbon::parse($order->kitchen_time)->isAfter(Carbon::today());
+
+                if (isset($request->status) && $request->status !== '') {
+                    return $isUpcoming && $order->status == $request->status;
+                }
+
+                return $isUpcoming;
+            });
+        }
+
+
+        if ($request->day == 'all') {
+
+            if (isset($request->status) && $request->status !== '') {
+                $orders = $orders->where('status', $request->status);
+            }
+        }
 
         return $orders;
     }
@@ -66,7 +102,7 @@ class OrderRepository
         OrderItem::where('order_id', $find_order->id)
         ->whereNotIn('concession_id', $request->concessions)
         ->delete();
-        
+
         $find_order->total_price = $request->total_price;
         $find_order->kitchen_time = $request->kitchen_time;
         $find_order->status = $request->status;

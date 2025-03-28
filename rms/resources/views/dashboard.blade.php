@@ -17,9 +17,9 @@
         </div>
 
         <div class="row pb-3">
-            <div class="col-xl-3 col-md-6 col-12"
+            <div class="col-xl-3 col-md-6 col-12" id="today_total"  data-day="today" data-status=""
                 @if (Auth::user()->hasPermissionTo('Read_Order'))
-                    style="cursor: pointer" onclick="get_order_List('future','')"
+                    style="cursor: pointer"
                 @endif>
                 <div class="doctor-widget border-right-bg">
                     <div class="doctor-box-icon flex-shrink-0">
@@ -32,9 +32,9 @@
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6 col-12"
+            <div class="col-xl-3 col-md-6 col-12" id="today_pending" data-day="today" data-status="0"
                 @if (Auth::user()->hasPermissionTo('Read_Order'))
-                    style="cursor: pointer" onclick="get_order_List('future','')"
+                    style="cursor: pointer"
                 @endif>
                 <div class="doctor-widget border-right-bg">
                     <div class="doctor-box-icon flex-shrink-0">
@@ -47,9 +47,9 @@
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6 col-12"
+            <div class="col-xl-3 col-md-6 col-12" id="today_in_progress" data-day="today" data-status="1"
                 @if (Auth::user()->hasPermissionTo('Read_Order'))
-                    style="cursor: pointer" onclick="get_order_List('future', 0)"
+                    style="cursor: pointer"
                 @endif>
                 <div class="doctor-widget border-right-bg">
                     <div class="doctor-box-icon flex-shrink-0">
@@ -62,9 +62,9 @@
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6 col-12"
+            <div class="col-xl-3 col-md-6 col-12" id="today_completed" data-day="today" data-status="2"
                 @if (Auth::user()->hasPermissionTo('Read_Order'))
-                    style="cursor: pointer" onclick="get_order_List('future', 1)"
+                    style="cursor: pointer"
                 @endif>
                 <div class="doctor-widget">
                     <div class="doctor-box-icon flex-shrink-0">
@@ -77,8 +77,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="row _upcoming_order_div"></div>
     </div>
 
     <div class="doctor-list-blk col-12">
@@ -91,9 +89,9 @@
         </div>
 
         <div class="row pb-3">
-            <div class="col-xl-3 col-md-6 col-12"
+            <div class="col-xl-3 col-md-6 col-12" id="upcoming_total" data-day="upcoming" data-status=""
                 @if (Auth::user()->hasPermissionTo('Read_Order'))
-                    style="cursor: pointer" onclick="get_order_List('future','')"
+                    style="cursor: pointer"
                 @endif>
                 <div class="doctor-widget border-right-bg">
                     <div class="doctor-box-icon flex-shrink-0">
@@ -106,9 +104,9 @@
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6 col-12"
+            <div class="col-xl-3 col-md-6 col-12" id="upcoming_pending" data-day="upcoming" data-status="0"
                 @if (Auth::user()->hasPermissionTo('Read_Order'))
-                    style="cursor: pointer" onclick="get_order_List('future','')"
+                    style="cursor: pointer"
                 @endif>
                 <div class="doctor-widget border-right-bg">
                     <div class="doctor-box-icon flex-shrink-0">
@@ -121,9 +119,9 @@
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6 col-12"
+            <div class="col-xl-3 col-md-6 col-12" id="upcoming_in_progress" data-day="upcoming" data-status="1"
                 @if (Auth::user()->hasPermissionTo('Read_Order'))
-                    style="cursor: pointer" onclick="get_order_List('future', 0)"
+                    style="cursor: pointer"
                 @endif>
                 <div class="doctor-widget border-right-bg">
                     <div class="doctor-box-icon flex-shrink-0">
@@ -136,9 +134,9 @@
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6 col-12"
+            <div class="col-xl-3 col-md-6 col-12" id="upcoming_completed" data-day="upcoming" data-status="2"
                 @if (Auth::user()->hasPermissionTo('Read_Order'))
-                    style="cursor: pointer" onclick="get_order_List('future', 1)"
+                    style="cursor: pointer"
                 @endif>
                 <div class="doctor-widget">
                     <div class="doctor-box-icon flex-shrink-0">
@@ -151,8 +149,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="row _upcoming_order_div"></div>
     </div>
 
     <div class="doctor-list-blk col-12">
@@ -165,9 +161,9 @@
         </div>
 
         <div class="row pb-3">
-            <div class="col-xl-3 col-md-6 col-12"
+            <div class="col-xl-3 col-md-6 col-12" id="all_total" data-day="all" data-status=""
                 @if (Auth::user()->hasPermissionTo('Read_Order'))
-                    style="cursor: pointer" onclick="get_order_List('future','')"
+                    style="cursor: pointer"
                 @endif>
                 <div class="doctor-widget border-right-bg">
                     <div class="doctor-box-icon flex-shrink-0">
@@ -180,9 +176,9 @@
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6 col-12"
+            <div class="col-xl-3 col-md-6 col-12" id="all_pending" data-day="all" data-status="0"
                 @if (Auth::user()->hasPermissionTo('Read_Order'))
-                    style="cursor: pointer" onclick="get_order_List('future','')"
+                    style="cursor: pointer"
                 @endif>
                 <div class="doctor-widget border-right-bg">
                     <div class="doctor-box-icon flex-shrink-0">
@@ -195,9 +191,9 @@
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6 col-12"
+            <div class="col-xl-3 col-md-6 col-12" id="all_in_progress" data-day="all" data-status="1"
                 @if (Auth::user()->hasPermissionTo('Read_Order'))
-                    style="cursor: pointer" onclick="get_order_List('future', 0)"
+                    style="cursor: pointer"
                 @endif>
                 <div class="doctor-widget border-right-bg">
                     <div class="doctor-box-icon flex-shrink-0">
@@ -210,9 +206,9 @@
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6 col-12"
+            <div class="col-xl-3 col-md-6 col-12" id="all_completed" data-day="all" data-status="2"
                 @if (Auth::user()->hasPermissionTo('Read_Order'))
-                    style="cursor: pointer" onclick="get_order_List('future', 1)"
+                    style="cursor: pointer"
                 @endif>
                 <div class="doctor-widget">
                     <div class="doctor-box-icon flex-shrink-0">
@@ -225,8 +221,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="row _upcoming_order_div"></div>
     </div>
 
     @if (Auth::user()->hasPermissionTo('Read_Order'))
@@ -281,14 +275,14 @@
     var table;
 
     $(document).ready(function() {
-        loadData();
 
-        $('#filter').click(function() {
-            table.ajax.reload();
-        });
+        loadData("","");
     });
+        function loadData(day,status) {
 
-        function loadData() {
+            if ($.fn.DataTable.isDataTable('#data_table')) {
+                table.destroy();
+            }
                 table = $('#data_table').DataTable({
                     "stripeClasses": [],
                     "lengthMenu": [10, 20, 50],
@@ -297,7 +291,11 @@
                     serverSide: true,
                     orderable: false,
                     ajax: {
-                        url: "{{ route('orders', ['json' => 1]) }}"
+                        url: "{{ route('orders', ['json' => 1]) }}",
+                        data: function(d) {
+                        d.day = day;
+                        d.status =status;
+                    }
                     },
                     columns: [{
                             data: 'DT_RowIndex',
@@ -342,5 +340,15 @@
             });
         }
 
+</script>
+
+<script>
+
+        $('[data-day]').on('click', function () {
+            const day = $(this).data('day');
+            const status = $(this).data('status');
+            loadData(day,status);
+
+        });
 </script>
 @endsection
